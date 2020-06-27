@@ -1,6 +1,8 @@
 ---
 - hosts: all
   become: True
+  vars:
+    - apache_port: 80      
   tasks:
     - name: Install Apache Server
       yum: 
@@ -18,8 +20,10 @@
       copy:
         src: index.html
         dest: /var/www/html/index.html
+      notify:
+          - Restart Apache  
     - name: Change the Port Number
-      copy:
+      template:
         src: httpd.conf
         dest: /etc/httpd/conf/httpd.conf
       notify:
